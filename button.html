@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GPS Location</title>
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            console.log(latitude + "," + longitude)
+            document.getElementById("location").innerHTML = "緯度: " + latitude + "<br>経度: " + longitude;
+        }
+    </script>
+</head>
+<body>
+    <button onclick="getLocation()">位置情報を取得</button>
+    <div id="location"></div>
+</body>
+</html>
