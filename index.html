@@ -10,14 +10,29 @@
         var cmanMapTime;            //【デモ用】地図を更新した時間
         var cmanMapUpTime = 5;      //【デモ用】地図は5秒以上の間隔で更新
 
+        var first_watLatitude_j = true;
+        var first_watLongitude_j = true;
+        var first_watLatitude;
+        var first_watLongitude;
+        
+
+
         //==================================================================================================
         //  位置取得 成功時に実行される
         //==================================================================================================
         function cmanWatOk(argPos){
+            if(first_watLatitude_j){
+                first_watLatitude_j = false;
+                first_watLatitude = argPos.coords.latitude;
+            }
+            if(first_watLongitude_j){
+                first_watLongitude_j = false;
+                first_watLongitude = argPos.coords.longitude;
+            }
 
             // --- 取得した値を出力 ------------------------------------------------------------------------
-            document.getElementById("watLatitude").innerHTML         = argPos.coords.latitude;          // 緯度
-            document.getElementById("watLongitude").innerHTML        = argPos.coords.longitude;         // 経度
+            document.getElementById("watLatitude").innerHTML         = argPos.coords.latitude - first_watLatitude;          // 緯度
+            document.getElementById("watLongitude").innerHTML        = argPos.coords.longitude - first_watLongitude;         // 経度
             document.getElementById("watAccuracy").innerHTML         = argPos.coords.accuracy;          // 緯度・経度の誤差
             document.getElementById("watAltitude").innerHTML         = argPos.coords.altitude;          // 高度
             document.getElementById("watAltitudeAccuracy").innerHTML = argPos.coords.altitudeAccuracy;  // 高度の誤差
