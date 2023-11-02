@@ -4,13 +4,14 @@
   <title>GPSの緯度経度取得</title>
 </head>
 <body>
+  aaaa
   <div id="coordinates"></div>
 
   <script>
-    // 緯度経度を取得する関数
-    function getCoordinates() {
+    // リアルタイムにGPSポジションを取得しHTML要素を更新させたい
+    function updateCoordinates() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showCoordinates);
+        navigator.geolocation.watchPosition(showCoordinates);
       } else {
         alert("お使いのブラウザはGeolocationに対応していません。");
       }
@@ -26,7 +27,7 @@
     }
 
     // ページが読み込まれた時に緯度経度を取得する
-    window.onload = getCoordinates;
+    window.onload = updateCoordinates;
   </script>
 </body>
 </html>
