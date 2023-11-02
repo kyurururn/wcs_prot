@@ -4,33 +4,48 @@
     <meta charset="UTF-8">
     <title>My Website</title>
     <script>
-        // 最初のポジションを最初に出力して、相対座標を連続的にconsole.logしたい
         var isFirstPosition = true;
-        var watchId = navigator.geolocation.watchPosition(function(position) {
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
+        var watchId;
 
-            // 最初のポジションの場合は出力する
-            if (isFirstPosition) {
-                console.log("最初のポジション: " + latitude + ", " + longitude);
-                initialLatitude = latitude;
-                initialLongitude = longitude;
-                isFirstPosition = false;
+        function requestLocationPermission() {
+            if (navigator.permissions) {
+                navigator.permissions.query({ name: 'geolocation' }).then(function(permissionStatus) {
+                    if (permissionStatus.state === 'granted') {
+                        startWatchingPosition();
+                    } else if (permissionStatus.state === 'prompt') {
+                        permissionStatus.onchange = function() {
+                            if (permissionStatus.state === 'granted') {
+                                startWatchingPosition();
+                            }
+                        };
+                    }
+                });
+            } else if (navigator.geolocation) {
+                startWatchingPosition();
             }
+        }
 
-            // 相対座標を出力する
-            console.log("相対座標: " + (latitude - initialLatitude) + ", " + (longitude - initialLongitude));
-            document.getElementById("inner").innerHTML = "最初のポジション: " + latitude + ", " + longitude + "<br>相対座標: " + (latitude - initialLatitude) + ", " + (longitude - initialLongitude);
-        })
+        function startWatchingPosition() {
+            watchId = navigator.geolocation.watchPosition(function(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+
+                if (isFirstPosition) {
+                    console.log("最初のポジション: " + latitude + ", " + longitude);
+                    initialLatitude = latitude;
+                    initialLongitude = longitude;
+                    isFirstPosition = false;
+                }
+
+                console.log("相対座標: " + (latitude - initialLatitude) + ", " + (longitude - initialLongitude));
+                document.getElementById("inner").innerHTML = "最初のポジション: " + latitude + ", " + longitude + "<br>相対座標: " + (latitude - initialLatitude) + ", " + (longitude - initialLongitude);
+            });
+        }
     </script>
 </head>
 <body>
     <canvas id="myCanvas"></canvas>
     <div id="inner"></div>
-    <!-- Your code here -->
-
+    <button onclick="requestLocationPermission()">位置情報の許可を求める</button>
 </body>
 </html>
-
-
-
