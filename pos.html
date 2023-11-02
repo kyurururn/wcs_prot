@@ -4,10 +4,14 @@
   <title>GPSの緯度経度取得</title>
 </head>
 <body>
-  aaaa
   <div id="coordinates"></div>
 
   <script>
+    var first_watLatitude_j = true;
+    var first_watLongitude_j = true;
+    var first_watLatitude;
+    var first_watLongitude;
+
     // リアルタイムにGPSポジションを取得しHTML要素を更新させたい
     function updateCoordinates() {
       if (navigator.geolocation) {
@@ -22,8 +26,17 @@
       var latitude = position.coords.latitude;
       var longitude = position.coords.longitude;
 
+      if(first_watLatitude_j){
+        first_watLatitude_j = false;
+        first_watLatitude = position.coords.latitude;
+      }
+      if(first_watLongitude_j){
+        first_watLongitude_j = false;
+        first_watLongitude = position.coords.longitude;
+      }
+
       var coordinatesDiv = document.getElementById("coordinates");
-      coordinatesDiv.innerHTML = "緯度: " + latitude + "<br>経度: " + longitude;
+      coordinatesDiv.innerHTML = "緯度: " + (latitude - first_watLatitude) + "<br>経度: " + (longitude - first_watLongitude);
     }
 
     // ページが読み込まれた時に緯度経度を取得する
