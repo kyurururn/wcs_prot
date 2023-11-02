@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GPSの緯度経度取得</title>
+</head>
+<body>
+  <div id="coordinates"></div>
+
+  <script>
+    // 緯度経度を取得する関数
+    function getCoordinates() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showCoordinates);
+      } else {
+        alert("お使いのブラウザはGeolocationに対応していません。");
+      }
+    }
+
+    // 緯度経度を表示する関数
+    function showCoordinates(position) {
+      var latitude = position.coords.latitude;
+      var longitude = position.coords.longitude;
+
+      var coordinatesDiv = document.getElementById("coordinates");
+      coordinatesDiv.innerHTML = "緯度: " + latitude + "<br>経度: " + longitude;
+    }
+
+    // ページが読み込まれた時に緯度経度を取得する
+    window.onload = getCoordinates;
+  </script>
+</body>
+</html>
